@@ -112,8 +112,11 @@ yum -y install mariadb-server mariadb
 
 
 rm -f /etc/my.cnf.d/server.cnf
-wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/server.cnf -P /etc/my.cnf.d/
+wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/bvat.sh -P /root/
+wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/bvat.tpl -P /root/
+wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/bvat.csv -P /root/
 
+sh /root/bvat.sh
 systemctl start mariadb
 systemctl enable mariadb
 
