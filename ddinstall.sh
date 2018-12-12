@@ -69,7 +69,7 @@ while true; do
     read -s -p "Confirm password for MYSQL root: " password2
     echo
     [ "$MYSQLROOTPASSWORD" = "$password2" ] && break
-    echo "mysql root password and confirmation password do not match. Try again"
+    print "Mysql root password and confirmation password do not match. Try again" 1
 done
 
 
