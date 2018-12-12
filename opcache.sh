@@ -23,7 +23,7 @@ get_available_memory(){
 }
 
 
-
+        get_available_memory
         opcache_template=/root/opcache.tpl
         opcache_memory_mb=$(( $AVAILABLE_MEMORY_MB/8 ))
         [[ -z $opcache_memory_mb ]] && opcache_memory_mb=64
