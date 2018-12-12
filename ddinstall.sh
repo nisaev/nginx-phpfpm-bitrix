@@ -108,11 +108,11 @@ systemctl enable mariadb
 
 
 mkdir /var/www/$DDOMAIN
+BXSNAME = tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c10
+wget http://www.1c-bitrix.ru/download/scripts/bitrixsetup.php -O /var/www/$DDOMAIN/$BXSNAME.php
 chown -R nginx:nginx /var/www/$DDOMAIN
 chown -R nginx:nginx /var/lib/php/
 chown -R nginx:nginx /var/www/
-wget http://www.1c-bitrix.ru/download/scripts/bitrixsetup.php -P /var/www/$DDOMAIN
-
 
 
 rm -f /etc/php.d/10-opcache.ini
@@ -140,3 +140,4 @@ service php-fpm restart
 
 
 print "Installation Complete!!" 1
+print "Use http://$DDOMAIN/$BXSNAME.php to install Bitrix" 1
