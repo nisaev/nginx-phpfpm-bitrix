@@ -144,6 +144,7 @@ wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/10-opca
 
 wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/nginx-domain.conf -O /etc/nginx/conf.d/$DDOMAIN.conf
 sed -i "s/domain.ru/$DDOMAIN/" /etc/nginx/conf.d/$DDOMAIN.conf
+sed -i "s/127.0.0.1   localhost/127.0.0.1   localhost   $DDOMAIN/" /etc/hosts
 
 
 mysql_secure_installation <<EOF
