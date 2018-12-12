@@ -105,7 +105,8 @@ ddopcache(){
             cat $opcache_template | \
                 sed -e "s:__MEMORY__:$opcache_memory_mb:;s:__MEMORYSTR__:$opcache_memory_strings:;" \
                 > $opcache_config 2>/dev/null && \
-    
+	echo "ok"
+	fi    
 }
 
 
