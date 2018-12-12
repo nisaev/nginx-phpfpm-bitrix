@@ -88,6 +88,34 @@ get_memory_limits(){
 }
 
 
+ddopcach(){
+    if [[ $IS_OPCACHE_PHP -gt 0 ]]; then
+        log_to_file "Opcache module is enabled. Start configuration."
+        opcache_template=/root/opcache.tpl
+        opcache_memory_mb=$(( $AVAILABLE_MEMORY_MB/8 ))
+        [[ -z $opcache_memory_mb ]] && opcache_memory_mb=64
+        [[ $opcache_memory_mb -lt 64 ]] && opcache_memory_mb=64
+        [[ $opcache_memory_mb -gt 2048 ]] && opcache_memory_mb=2048
+
+        opcache_memory_strings=$(( $opcache_memory_mb/4 ))
+
+        opcache_config=/etc/php.d/10-opcache.ini
+        [[ "$PHP_VERSION" == "5.4" ]] && opcache_config=/etc/php.d/opcache.ini
+
+        # delete old config file; if there is one
+        [[ ( "$PHP_VERSION" != "5.4" ) && \
+            ( -f /etc/php.d/opcache.ini ) ]] && \
+            rm -f /etc/php.d/opcache.ini
+
+        # update opcache config
+        if [[ -f $opcache_template ]]; then
+            cat $opcache_template | \
+                sed -e "s:__MEMORY__:$opcache_memory_mb:;s:__MEMORYSTR__:$opcache_memory_strings:;" \
+                > $opcache_config 2>/dev/null && \
+                log_to_file "Update opcache config=$opcache_config"
+        fi
+    fi
+}
 
 update_config(){
     orig=${1}
