@@ -5,7 +5,7 @@ print(){
     notice=${2:-0}
     [[ ( $SILENT -eq 0 ) && ( $notice -eq 1 ) ]] && echo -e "${msg}"
     [[ ( $SILENT -eq 0 ) && ( $notice -eq 2 ) ]] && echo -e "\e[1;31m${msg}\e[0m"
-    [[ ( $SILENT -eq 0 ) && ( $notice -eq 3 ) ]] && echo -e "\e[42m${msg}\e[0m"
+    [[ ( $SILENT -eq 0 ) && ( $notice -eq 3 ) ]] && echo -e "\e[30;48;5;82m${msg}\e[0m"
     [[ ( $SILENT -eq 0 ) && ( $notice -eq 4 ) ]] && echo -e "\e[32m${msg}\e[0m"
    
     
