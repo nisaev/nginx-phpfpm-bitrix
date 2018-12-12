@@ -62,7 +62,8 @@ fi
 
 disable_selinux	
 read -p "Enter Domain Name (example: domain.ru): " DDOMAIN
-read -p -s "Enter password for MYSQL root: (Entered symbols will be hidden at screen) " MYSQLROOTPASSWORD
+echo "Enter password for MYSQL root:"
+read -s MYSQLROOTPASSWORD
 cat > /root/mysql.pass << EOF
 $MYSQLROOTPASSWORD
 EOF
