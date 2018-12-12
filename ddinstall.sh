@@ -91,9 +91,12 @@ yum -y install php71
 yum -y install php-fpm php-cli php-mysql php-gd php-ldap php-odbc php-pdo php-pecl-memcache php-pear php-xml php-xmlrpc php-mbstring php-snmp php-soap php-zip php-opcache
 yum -y install msmtp
 
+yum -y install fail2ban-firewalld
+wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/jail.local -P /etc/fail2ban/
+systemctl start fail2ban.service
+systemctl enable fail2ban.service
 
-
-wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/customphp.ini -P /etc/php.d
+wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/customphp.ini -P /etc/php.d/
 
 
 rm -f /etc/php-fpm.d/www.conf
