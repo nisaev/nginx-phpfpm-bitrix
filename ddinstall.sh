@@ -3,10 +3,10 @@
 print(){
     msg=$1
     notice=${2:-0}
-    [[ ( $SILENT -eq 0 ) && ( $notice -eq 1 ) ]] && echo -e "${msg}"
-    [[ ( $SILENT -eq 0 ) && ( $notice -eq 2 ) ]] && echo -e "\e[1;31m${msg}\e[0m"
-    [[ ( $SILENT -eq 0 ) && ( $notice -eq 3 ) ]] && echo -e "\e[30;48;5;82m${msg}\e[0m"
-    [[ ( $SILENT -eq 0 ) && ( $notice -eq 4 ) ]] && echo -e "\e[32m${msg}\e[0m"
+    [[ ( $notice -eq 1 ) ]] && echo -e "${msg}"
+    [[ ( $notice -eq 2 ) ]] && echo -e "\e[1;31m${msg}\e[0m"
+    [[ ( $notice -eq 3 ) ]] && echo -e "\e[30;48;5;82m${msg}\e[0m"
+    [[ ( $notice -eq 4 ) ]] && echo -e "\e[32m${msg}\e[0m"
    
     
 }
@@ -44,20 +44,10 @@ sestatus_cmd=$(which sestatus 2>/dev/null)
     fi
 }	
 
-
-
-if [[ $SILENT -eq 0 ]]; then
     print "====================================================================" 2
-    print "NGINX + PHP-FPM (Bitrix Edition)for Linux installation script." 2
-    print "Yes will be assumed to answers, and will be defaulted." 2
-    print "'n' or 'no' will result in a No answer, anything else will be a yes." 2
-    print "This script MUST be run as root or it will fail" 2
+    print "NGINX + PHP-FPM (Bitrix Edition) for Linux installation script." 2
+    print "This script MUST be run as root!" 2
     print "====================================================================" 2
-
-    ASK_USER=1
-else
-    ASK_USER=0
-fi
 
 
 disable_selinux	
@@ -169,8 +159,9 @@ service mariadb restart
 service php-fpm restart
 
 
-
+print "====================================================================" 4
 print "\nInstallation Complete!!" 3
 print "\nUse http://$DDOMAIN/install-$bxsname.php to install Bitrix" 3
 print "Use http://$DDOMAIN/restore-$bxsname.php to restore Bitrix from backup" 3
 print "You can find mysql root password in '/root/mysql.pass'" 3
+print "====================================================================" 4
