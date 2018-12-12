@@ -88,9 +88,7 @@ get_memory_limits(){
 }
 
 
-ddopcach(){
-    if [[ $IS_OPCACHE_PHP -gt 0 ]]; then
-        log_to_file "Opcache module is enabled. Start configuration."
+ddopcache(){
         opcache_template=/root/opcache.tpl
         opcache_memory_mb=$(( $AVAILABLE_MEMORY_MB/8 ))
         [[ -z $opcache_memory_mb ]] && opcache_memory_mb=64
@@ -112,10 +110,9 @@ ddopcach(){
             cat $opcache_template | \
                 sed -e "s:__MEMORY__:$opcache_memory_mb:;s:__MEMORYSTR__:$opcache_memory_strings:;" \
                 > $opcache_config 2>/dev/null && \
-                log_to_file "Update opcache config=$opcache_config"
         fi
-    fi
 }
+
 
 update_config(){
     orig=${1}
@@ -175,8 +172,6 @@ update_configs_mysql(){
     update_config "$MYSQL_CONFIG" "$MYSQL_CONFIG_TMP"
 }
 
-
-
 opt=$1
 if [[ ( -n $opt ) && ( -f $opt ) ]]; then
     source $opt
@@ -196,3 +191,4 @@ get_available_memory
 # 
 get_memory_limits
 update_configs_mysql
+ddopcache
