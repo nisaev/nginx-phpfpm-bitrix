@@ -87,9 +87,7 @@ get_memory_limits(){
     [[ -z $MAX_MB ]] && MAX_MB=512
 }
 
-ddopcach(){
-    
-        
+ddopcache(){
         opcache_template=/root/opcache.tpl
         opcache_memory_mb=$(( $AVAILABLE_MEMORY_MB/8 ))
         [[ -z $opcache_memory_mb ]] && opcache_memory_mb=64
@@ -107,8 +105,6 @@ ddopcach(){
             cat $opcache_template | \
                 sed -e "s:__MEMORY__:$opcache_memory_mb:;s:__MEMORYSTR__:$opcache_memory_strings:;" \
                 > $opcache_config 2>/dev/null && \
-                
-        fi
     
 }
 
