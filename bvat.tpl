@@ -1,8 +1,9 @@
 # memory: {{ max_memory }}MB
 [mysqld]
-	  transaction-isolation = READ-COMMITTED
-	  innodb_flush_method = O_DIRECT
-	  innodb_flush_log_at_trx_commit = 2
+    sql_mode = ""
+    transaction-isolation = READ-COMMITTED
+    innodb_flush_method = O_DIRECT
+    innodb_flush_log_at_trx_commit = 2
     query_cache_type = 1
     query_cache_size = {{ query_cache_size }}M
     query_cache_limit = {{ query_cache_limit }}M
