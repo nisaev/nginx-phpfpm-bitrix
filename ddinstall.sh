@@ -112,7 +112,10 @@ systemctl enable mariadb
 
 mkdir /var/www/$DDOMAIN
 bxsname=`tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c10`
-wget http://www.1c-bitrix.ru/download/scripts/bitrixsetup.php -O /var/www/$DDOMAIN/$bxsname.php
+wget http://www.1c-bitrix.ru/download/scripts/bitrixsetup.php -O /var/www/$DDOMAIN/install-$bxsname.php
+
+sed -i "s/$bx_host = 'www.1c-bitrix.ru';/$bx_host = 'www.sbros-update-shtoby-ne-zagruzhlsia-noviy-script.ru';/" /var/www/$DDOMAIN/install-$bxsname.php
+
 wget http://www.1c-bitrix.ru/download/scripts/restore.php -O /var/www/$DDOMAIN/restore-$bxsname.php
 sed -i "s/restore.php/restore-$bxsname.php/" /var/www/$DDOMAIN/restore-$bxsname.php
 sed -i "s/$bx_host = 'www.1c-bitrix.ru';/$bx_host = 'www.sbros-update-shtoby-ne-zagruzhlsia-noviy-script.ru';/" /var/www/$DDOMAIN/restore-$bxsname.php
@@ -149,5 +152,5 @@ service php-fpm restart
 
 
 print "\nInstallation Complete!!" 4
-print "\nUse http://$DDOMAIN/$bxsname.php to install Bitrix" 3
+print "\nUse http://$DDOMAIN/install-$bxsname.php to install Bitrix" 3
 print "Use http://$DDOMAIN/restore-$bxsname.php to restore Bitrix from backup" 3
