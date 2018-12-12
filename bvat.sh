@@ -87,7 +87,6 @@ get_memory_limits(){
     [[ -z $MAX_MB ]] && MAX_MB=512
 }
 
-
 ddopcache(){
         opcache_template=/root/opcache.tpl
         opcache_memory_mb=$(( $AVAILABLE_MEMORY_MB/8 ))
