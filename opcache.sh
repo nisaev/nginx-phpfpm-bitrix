@@ -47,3 +47,12 @@ get_available_memory(){
                 > $opcache_config 2>/dev/null && \
                
         fi
+        
+opcache_template=/root/opcache.tpl
+opcache_memory_mb=$(( $AVAILABLE_MEMORY_MB/8 ))
+[[ -z $opcache_memory_mb ]] && opcache_memory_mb=64
+[[ $opcache_memory_mb -lt 64 ]] && opcache_memory_mb=64
+[[ $opcache_memory_mb -gt 2048 ]] && opcache_memory_mb=2048
+opcache_memory_strings=$(( $opcache_memory_mb/4 ))
+opcache_config=/etc/php.d/10-opcache.ini
+cat $opcache_template | \ sed -e "s:__MEMORY__:$opcache_memory_mb:;s:__MEMORYSTR__:$opcache_memory_strings:;" \ > $opcache_config 2>/dev/null && \        
