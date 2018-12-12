@@ -105,7 +105,7 @@ ddopcache(){
             cat $opcache_template | \
                 sed -e "s:__MEMORY__:$opcache_memory_mb:;s:__MEMORYSTR__:$opcache_memory_strings:;" \
                 > $opcache_config 2>/dev/null && \
-	echo "ok"
+	echo "oke"
 	fi    
 }
 
@@ -136,7 +136,7 @@ update_config(){
 update_configs_mysql(){
 
     MYSQL_CONFIG=/etc/my.cnf.d/bvat.cnf
-	echo "ok"
+	echo "oke"
     # update mysql config
     MYSQL_CONFIG_TMP=$MYSQL_CONFIG.tmp
     MYSQL_CONFIG_TEMPLATE=/root/bvat.tpl
