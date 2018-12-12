@@ -64,8 +64,12 @@ disable_selinux
 read -p "Enter Domain Name (example: domain.ru): " DDOMAIN
 
 while true; do
-    read -s -p "Enter password for MYSQL root: " MYSQLROOTPASSWORD
+    read -s -p "Enter password for MYSQL root(empty will random generate): " MYSQLROOTPASSWORD
     echo
+    if[[$MYSQLROOTPASSWORD -eq ""]]; then
+        MYSQLROOTPASSWORD=`tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c10`
+        break
+    fi
     read -s -p "Confirm password for MYSQL root: " password2
     echo
     [ "$MYSQLROOTPASSWORD" = "$password2" ] && break
