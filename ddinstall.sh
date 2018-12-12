@@ -165,7 +165,7 @@ service php-fpm restart
 
 
 
-print "\nInstallation Complete!!" 4
+print "\nInstallation Complete!!" 3
 print "\nUse http://$DDOMAIN/install-$bxsname.php to install Bitrix" 3
 print "Use http://$DDOMAIN/restore-$bxsname.php to restore Bitrix from backup" 3
 print "You can find mysql root password in '/root/mysql.pass'" 3
