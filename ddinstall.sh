@@ -89,7 +89,7 @@ firewall-cmd --reload
 yum-config-manager --enable remi-php71
 yum -y install php71
 yum -y install php-fpm php-cli php-mysql php-gd php-ldap php-odbc php-pdo php-pecl-memcache php-pear php-xml php-xmlrpc php-mbstring php-snmp php-soap php-zip php-opcache
-
+yum -y install msmtp
 
 
 
