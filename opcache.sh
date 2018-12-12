@@ -24,7 +24,7 @@ get_available_memory(){
 
 
 
-        opcache_template=/etc/ansible/bvat_conf/opcache.ini.bx
+        opcache_template=/root/opcache.tpl
         opcache_memory_mb=$(( $AVAILABLE_MEMORY_MB/8 ))
         [[ -z $opcache_memory_mb ]] && opcache_memory_mb=64
         [[ $opcache_memory_mb -lt 64 ]] && opcache_memory_mb=64
@@ -45,5 +45,5 @@ get_available_memory(){
             cat $opcache_template | \
                 sed -e "s:__MEMORY__:$opcache_memory_mb:;s:__MEMORYSTR__:$opcache_memory_strings:;" \
                 > $opcache_config 2>/dev/null && \
-                log_to_file "Update opcache config=$opcache_config"
+               
         fi
