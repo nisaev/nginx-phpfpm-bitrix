@@ -142,8 +142,6 @@ chown -R nginx:nginx /var/www/
 
 
 
-rm -f /etc/php.d/10-opcache.ini
-wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/10-opcache.ini -P /etc/php.d/
 
 wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/nginx-domain.conf -O /etc/nginx/conf.d/$DDOMAIN.conf
 sed -i "s/domain.ru/$DDOMAIN/" /etc/nginx/conf.d/$DDOMAIN.conf
