@@ -64,17 +64,18 @@ disable_selinux
 read -p "Enter Domain Name (example: domain.ru): " DDOMAIN
 
 while true; do
-    read -s -p "Enter password for MYSQL root(empty will random generate): " MYSQLROOTPASSWORD
-    echo
-    if[[$MYSQLROOTPASSWORD -eq ""]]; then
-        MYSQLROOTPASSWORD=`tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c10`
+    read  -p "Enter password for MYSQL root(empty will random generate): " MYSQLROOTPASSWORD
+
+    if [[ $MYSQLROOTPASSWORD == "" ]]; then
+        MYSQLROOTPASSWORD=`tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c14`
         break
     fi
-    read -s -p "Confirm password for MYSQL root: " password2
-    echo
+    read  -p "Confirm password for MYSQL root: " password2
+
     [ "$MYSQLROOTPASSWORD" = "$password2" ] && break
     print "Mysql root password and confirmation password do not match. Try again" 1
 done
+
 
 
 cat > /root/mysql.pass << EOF
