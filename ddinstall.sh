@@ -62,7 +62,11 @@ fi
 
 disable_selinux	
 read -p "Enter Domain Name (example: domain.ru): " DDOMAIN
-read -p "Enter password for MYSQL root: " MYSQLROOTPASSWORD
+read -p -s "Enter password for MYSQL root: (Entered symbols will be hidden at screen) " MYSQLROOTPASSWORD
+cat > /root/mysql.pass << EOF
+$MYSQLROOTPASSWORD
+EOF
+
 yum -y install mc nano net-tools wget epel-release
 yum -y update
 yum -y install yum-utils
@@ -154,3 +158,4 @@ service php-fpm restart
 print "\nInstallation Complete!!" 4
 print "\nUse http://$DDOMAIN/install-$bxsname.php to install Bitrix" 3
 print "Use http://$DDOMAIN/restore-$bxsname.php to restore Bitrix from backup" 3
+print "You can find mysql root password in '/root/mysql.pass'" 3
