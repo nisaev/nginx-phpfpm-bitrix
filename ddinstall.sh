@@ -92,8 +92,8 @@ yum -y install php-fpm php-cli php-mysql php-gd php-ldap php-odbc php-pdo php-pe
 
 
 
-rm -f /etc/php.ini
-wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/php.ini -P /etc/
+
+wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/customphp.ini -P /etc/php.d
 
 
 rm -f /etc/php-fpm.d/www.conf
@@ -142,7 +142,7 @@ chown -R nginx:nginx /var/www/
 rm -f /etc/php.d/10-opcache.ini
 wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/10-opcache.ini -P /etc/php.d/
 
-wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/domain10.ru.conf -O /etc/nginx/conf.d/$DDOMAIN.conf
+wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/nginx-domain.conf -O /etc/nginx/conf.d/$DDOMAIN.conf
 sed -i "s/domain.ru/$DDOMAIN/" /etc/nginx/conf.d/$DDOMAIN.conf
 
 
