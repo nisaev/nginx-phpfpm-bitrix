@@ -114,11 +114,11 @@ mkdir /var/www/$DDOMAIN
 bxsname=`tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c10`
 wget http://www.1c-bitrix.ru/download/scripts/bitrixsetup.php -O /var/www/$DDOMAIN/install-$bxsname.php
 
-sed -i "s/$bx_host = 'www.1c-bitrix.ru';/$bx_host = 'www.sbros-update-shtoby-ne-zagruzhlsia-noviy-script.ru';/" /var/www/$DDOMAIN/install-$bxsname.php
+sed -i "s/$bx_host = 'www.1c-bitrix.ru';/$bx_host = 'localhost';/" /var/www/$DDOMAIN/install-$bxsname.php
 
 wget http://www.1c-bitrix.ru/download/scripts/restore.php -O /var/www/$DDOMAIN/restore-$bxsname.php
 sed -i "s/restore.php/restore-$bxsname.php/" /var/www/$DDOMAIN/restore-$bxsname.php
-sed -i "s/$bx_host = 'www.1c-bitrix.ru';/$bx_host = 'www.sbros-update-shtoby-ne-zagruzhlsia-noviy-script.ru';/" /var/www/$DDOMAIN/restore-$bxsname.php
+sed -i "s/$bx_host = 'www.1c-bitrix.ru';/$bx_host = 'localhost';/" /var/www/$DDOMAIN/restore-$bxsname.php
 
 
 chown -R nginx:nginx /var/www/$DDOMAIN
