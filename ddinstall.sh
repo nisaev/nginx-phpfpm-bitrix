@@ -5,6 +5,9 @@ print(){
     notice=${2:-0}
     [[ ( $SILENT -eq 0 ) && ( $notice -eq 1 ) ]] && echo -e "${msg}"
     [[ ( $SILENT -eq 0 ) && ( $notice -eq 2 ) ]] && echo -e "\e[1;31m${msg}\e[0m"
+    [[ ( $SILENT -eq 0 ) && ( $notice -eq 3 ) ]] && echo -e "\e[42m${msg}\e[0m"
+    [[ ( $SILENT -eq 0 ) && ( $notice -eq 4 ) ]] && echo -e "\e[32m${msg}\e[0m"
+   
     
 }
 
@@ -112,6 +115,9 @@ bxsname=`tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c10`
 wget http://www.1c-bitrix.ru/download/scripts/bitrixsetup.php -O /var/www/$DDOMAIN/$bxsname.php
 wget http://www.1c-bitrix.ru/download/scripts/restore.php -O /var/www/$DDOMAIN/restore-$bxsname.php
 sed -i "s/restore.php/restore-$bxsname.php/" /var/www/$DDOMAIN/restore-$bxsname.php
+sed -i "s/$bx_host = 'www.1c-bitrix.ru';/$bx_host = 'www.sbros-update-shtoby-ne-zagruzhlsia-noviy-script.ru';/" /var/www/$DDOMAIN/restore-$bxsname.php
+
+
 chown -R nginx:nginx /var/www/$DDOMAIN
 chown -R nginx:nginx /var/lib/php/
 chown -R nginx:nginx /var/www/
@@ -142,6 +148,6 @@ service php-fpm restart
 
 
 
-print "Installation Complete!!" 1
-print "Use http://$DDOMAIN/$bxsname.php to install Bitrix" 2
-print "Use http://$DDOMAIN/restore-$bxsname.php to restore Bitrix from backup" 2
+print "\nInstallation Complete!!" 4
+print "\nUse http://$DDOMAIN/$bxsname.php to install Bitrix" 3
+print "Use http://$DDOMAIN/restore-$bxsname.php to restore Bitrix from backup" 3
