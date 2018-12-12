@@ -118,6 +118,7 @@ rm -f /etc/my.cnf.d/server.cnf
 wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/bvat.sh -P /root/
 wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/bvat.tpl -P /root/
 wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/bvat.csv -P /root/
+wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/opcache.tpl -P /root/
 
 sh /root/bvat.sh
 systemctl start mariadb
