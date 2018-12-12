@@ -81,11 +81,11 @@ yum -y install php-fpm php-cli php-mysql php-gd php-ldap php-odbc php-pdo php-pe
 
 
 rm -f /etc/php.ini
-wget https://raw.githubusercontent.com/nisaev/mariadbrepo/master/php.ini -P /etc/
+wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/php.ini -P /etc/
 
 
 rm -f /etc/php-fpm.d/www.conf
-wget https://raw.githubusercontent.com/nisaev/mariadbrepo/master/www.conf -P /etc/php-fpm.d/
+wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/www.conf -P /etc/php-fpm.d/
 
 
 
@@ -95,12 +95,12 @@ systemctl enable php-fpm
 
 
 rm -f /etc/yum.repos.d/mariadb.repo
-wget https://raw.githubusercontent.com/nisaev/mariadbrepo/master/mariadb.repo -P /etc/yum.repos.d/
+wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/mariadb.repo -P /etc/yum.repos.d/
 yum -y install mariadb-server mariadb
 
 
 rm -f /etc/my.cnf.d/server.cnf
-wget https://raw.githubusercontent.com/nisaev/mariadbrepo/master/server.cnf -P /etc/my.cnf.d/
+wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/server.cnf -P /etc/my.cnf.d/
 
 systemctl start mariadb
 systemctl enable mariadb
@@ -117,9 +117,9 @@ chown -R nginx:nginx /var/www/
 
 
 rm -f /etc/php.d/10-opcache.ini
-wget https://raw.githubusercontent.com/nisaev/mariadbrepo/master/10-opcache.ini -P /etc/php.d/
+wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/10-opcache.ini -P /etc/php.d/
 
-wget https://raw.githubusercontent.com/nisaev/mariadbrepo/master/domain10.ru.conf -O /etc/nginx/conf.d/$DDOMAIN.conf
+wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/domain10.ru.conf -O /etc/nginx/conf.d/$DDOMAIN.conf
 sed -i "s/domain.ru/$DDOMAIN/" /etc/nginx/conf.d/$DDOMAIN.conf
 
 
