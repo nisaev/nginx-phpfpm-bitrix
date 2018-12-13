@@ -183,9 +183,8 @@ if [[ ! $DDHTTPS =~ ^[Nn]$ ]]; then
 yum -y install certbot python-certbot-nginx
 clear
 
-print "Let's Encrypt config manager:" 4
+print "Let's Encrypt HTTPS configurator:" 4
 certbot --nginx
-crontab -l > mycron.tmp
 echo "15 3 * * 6 certbot renew && service nginx restart" >> mycron.tmp
 crontab mycron.tmp
 rm -f mycron.tmp
