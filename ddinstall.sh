@@ -183,7 +183,7 @@ service mariadb restart
 service php-fpm restart
 
 
-if [[ $DDHTPS == "y" ]]; then
+if [[ $DDHTTPS == "y" ]]; then
 yum -y install certbot python-certbot-nginx
 certbot --nginx   
 fi
