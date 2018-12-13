@@ -79,7 +79,9 @@ EOF
 
 #Запрашиваем необходимость HTTPS
 read  -p "Install and activate free HTTPS with Let's Encrypt? (y/n):" DDHTTPS
-
+if [[ ! $DDHTTPS =~ ^[Nn]$ ]]; then
+read -p "Enter your EMAIL(Let's Encrypt required it): " HTTPSEMAIL
+fi
 
 #устанавливаем необходимые пакеты
 yum -y install mc nano net-tools wget epel-release
@@ -184,7 +186,15 @@ yum -y install certbot python-certbot-nginx
 clear
 
 print "Let's Encrypt HTTPS configurator:" 4
-certbot --nginx
+
+certbot --nginx <<EOF
+$HTTPSEMAIL
+A
+N
+1
+EOF
+
+
 echo "15 3 * * 6 certbot renew && service nginx restart" >> mycron.tmp
 crontab mycron.tmp
 rm -f mycron.tmp
