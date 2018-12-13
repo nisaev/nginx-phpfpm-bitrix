@@ -57,7 +57,7 @@ read -p "Enter Domain Name (example: domain.ru): " DDOMAIN
 
 #считываем пароль два раза - сравниваем. Если пустой - то генерируем рандомный
 while true; do
-    read  -s -p "Enter password for MYSQL root(empty will random generate): " MYSQLROOTPASSWORD
+    read  -s -p "Enter password for MySQL root(leave empty for random): " MYSQLROOTPASSWORD
 
     if [[ $MYSQLROOTPASSWORD == "" ]]; then
         MYSQLROOTPASSWORD=`tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c14`
@@ -65,10 +65,10 @@ while true; do
         break
     fi
     echo
-    read  -s -p "Confirm password for MYSQL root: " password2
+    read  -s -p "Confirm password for MySQL root: " password2
     echo
     [ "$MYSQLROOTPASSWORD" = "$password2" ] && break
-    print "Mysql root password and confirmation password do not match. Try again" 1
+    print "MySQL root password and confirmation password do not match. Try again" 1
 done
 
 #записываем пароль mysql в файл
@@ -181,7 +181,9 @@ service mariadb restart
 service php-fpm restart
 
 #устанавливаем certbot и настраиваем https
+linktype="http"
 if [[ ! $DDHTTPS =~ ^[Nn]$ ]]; then
+linktype="https"
 yum -y install certbot python-certbot-nginx
 clear
 print "Let's Encrypt HTTPS configurator:" 4
@@ -194,7 +196,8 @@ fi
 
 print "====================================================================" 4
 print "\nInstallation Complete!!" 3
-print "\nUse http://$DDOMAIN/install-$bxsname.php to install Bitrix" 3
-print "Use http://$DDOMAIN/restore-$bxsname.php to restore Bitrix from backup" 3
-print "You can find mysql root password in '/root/mysql.pass'" 3
+print "\nUse $linktype://$DDOMAIN/install-$bxsname.php to install Bitrix" 3
+print "Use $linktype://$DDOMAIN/restore-$bxsname.php to restore Bitrix from backup" 3
+print "MySQL root password is $MYSQLROOTPASSWORD" 2
+print "You can find MySQL root password in '/root/mysql.pass'" 3
 print "====================================================================" 4
