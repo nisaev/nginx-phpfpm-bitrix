@@ -63,6 +63,7 @@ while true; do
 
     if [[ $MYSQLROOTPASSWORD == "" ]]; then
         MYSQLROOTPASSWORD=`tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c14`
+        echo
         break
     fi
     echo
