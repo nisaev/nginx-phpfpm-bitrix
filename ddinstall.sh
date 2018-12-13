@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#Функция вывода цветного текста через print
 print(){
     msg=$1
     notice=${2:-0}
@@ -18,7 +19,7 @@ print_e(){
     exit 1
 }
 
-
+#функция проверяет и отключает SELINUX
 disable_selinux(){
 sestatus_cmd=$(which sestatus 2>/dev/null)
     [[ -z $sestatus_cmd ]] && return 0
@@ -50,9 +51,13 @@ sestatus_cmd=$(which sestatus 2>/dev/null)
     print "====================================================================" 2
 
 
+#запускаем функцию отключения selinux
 disable_selinux	
+
+#считываем название домена в переменную DDOMAIN
 read -p "Enter Domain Name (example: domain.ru): " DDOMAIN
 
+#считываем пароль два раза - сравниваем. Если пустой - то генерируем рандомный
 while true; do
     read  -s -p "Enter password for MYSQL root(empty will random generate): " MYSQLROOTPASSWORD
 
@@ -67,11 +72,12 @@ while true; do
     print "Mysql root password and confirmation password do not match. Try again" 1
 done
 
-
+#записываем пароль mysql в файл
 cat > /root/mysql.pass << EOF
 $MYSQLROOTPASSWORD
 EOF
 
+#устанавливаем нужные пакеты
 yum -y install mc nano net-tools wget epel-release
 yum -y update
 yum -y install yum-utils
@@ -96,9 +102,11 @@ wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/jail.lo
 systemctl start fail2ban.service
 systemctl enable fail2ban.service
 
+#загружаем конфиг с дополнениями к php.ini
 wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/customphp.ini -P /etc/php.d/
 
 
+#меняем настройки php-fpm
 old_run="listen = 127.0.0.1:9000"
 new_run=';listen = 127.0.0.1:9000\nlisten = \/var\/run\/php-fpm\/php-fpm.sock\nlisten.owner = nginx\nlisten.group = nginx\nlisten.mode = 0660'
 sed -i "s/$old_run/$new_run/" /etc/php-fpm.d/www.conf
@@ -113,23 +121,22 @@ sed -i "s/$old_run/$new_run/" /etc/php-fpm.d/www.conf
 systemctl start php-fpm
 systemctl enable php-fpm
 
-
+#устанавливаем mariadb 
 rm -f /etc/yum.repos.d/mariadb.repo
 wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/mariadb.repo -P /etc/yum.repos.d/
 yum -y install mariadb-server mariadb
 
-
+#скачиваем и запускаем скрипт автонастройки opcache и mariadb в зависимости от кол-ва ОЗУ на сервере
 wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/bvat.sh -P /root/
 wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/bvat.tpl -P /root/
 wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/bvat.csv -P /root/
 wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/opcache.tpl -P /root/
-
 sh /root/bvat.sh
 systemctl start mariadb
 systemctl enable mariadb
 
 
-
+#создаем папку домена и скачиванием в нее скрипты битрикса, меняем их имена, и фиксим в них названия файлов
 mkdir /var/www/$DDOMAIN
 bxsname=`tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c10`
 wget http://www.1c-bitrix.ru/download/scripts/bitrixsetup.php -O /var/www/$DDOMAIN/install-$bxsname.php
@@ -140,19 +147,17 @@ wget http://www.1c-bitrix.ru/download/scripts/restore.php -O /var/www/$DDOMAIN/r
 sed -i "s/restore.php/restore-$bxsname.php/" /var/www/$DDOMAIN/restore-$bxsname.php
 sed -i "s/$bx_host = 'www.1c-bitrix.ru';/$bx_host = 'localhost';/" /var/www/$DDOMAIN/restore-$bxsname.php
 
-
+#назначаем права папкам
 chown -R nginx:nginx /var/www/$DDOMAIN
 chown -R nginx:nginx /var/lib/php/
 chown -R nginx:nginx /var/www/
 
-
-
-
+#правим hosts для нормальной работы сокетов
 wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/nginx-domain.conf -O /etc/nginx/conf.d/$DDOMAIN.conf
 sed -i "s/domain.ru/$DDOMAIN/" /etc/nginx/conf.d/$DDOMAIN.conf
 sed -i "s/127.0.0.1   localhost/127.0.0.1   localhost   $DDOMAIN/" /etc/hosts
 
-
+#делаем настройки mysql, назначем рут пароль. Перед "y" пустая строка - не убирать!!
 mysql_secure_installation <<EOF
 
 y
@@ -164,6 +169,7 @@ y
 y
 EOF
 
+#рубутаем службы
 service nginx restart
 service mariadb restart
 service php-fpm restart
