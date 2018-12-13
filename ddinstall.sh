@@ -185,7 +185,11 @@ service php-fpm restart
 
 if [[ ! $DDHTTPS =~ ^[Nn]$ ]]; then
 yum -y install certbot python-certbot-nginx
-certbot --nginx   
+certbot --nginx
+crontab -l > mycron.tmp
+echo "15 3 * * 6 certbot renew && service nginx restart" >> mycron.tmp
+crontab mycron.tmp
+rm -f mycron.tmp
 fi
     
 
