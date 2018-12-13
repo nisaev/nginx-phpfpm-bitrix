@@ -7,9 +7,7 @@ print(){
     [[ ( $notice -eq 1 ) ]] && echo -e "${msg}"
     [[ ( $notice -eq 2 ) ]] && echo -e "\e[1;31m${msg}\e[0m"
     [[ ( $notice -eq 3 ) ]] && echo -e "\e[30;48;5;82m${msg}\e[0m"
-    [[ ( $notice -eq 4 ) ]] && echo -e "\e[32m${msg}\e[0m"
-   
-    
+    [[ ( $notice -eq 4 ) ]] && echo -e "\e[32m${msg}\e[0m"    
 }
 
 print_e(){
@@ -83,15 +81,15 @@ EOF
 read  -p "Install and activate free HTTPS with Let's Encrypt? (y/n):" DDHTTPS
 
 
-#устанавливаем нужные пакеты
+#устанавливаем необходимые пакеты
 yum -y install mc nano net-tools wget epel-release
 yum -y update
 yum -y install yum-utils
 rpm -Uhv http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 
+#подключаем репозиторий с последней стабильной версией nginx и устанавливаем nginx
 rm -f /etc/yum.repos.d/nginx.repo
 wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/nginx.repo -P /etc/yum.repos.d/
-
 yum -y install nginx
 systemctl start nginx
 systemctl enable nginx
@@ -99,12 +97,13 @@ firewall-cmd --permanent --zone=public --add-service=http
 firewall-cmd --permanent --zone=public --add-service=https
 firewall-cmd --reload
 
-
+#подключаем репозиторий с php 7.2 и устанавливаем
 yum-config-manager --enable remi-php72
 yum -y install php72
 yum -y install php-fpm php-cli php-mysql php-gd php-ldap php-odbc php-pdo php-pecl-memcache php-pear php-xml php-xmlrpc php-mbstring php-snmp php-soap php-zip php-opcache
 yum -y install msmtp
 
+#устанавливаем fail2ban 
 yum -y install fail2ban-firewalld
 wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/jail.local -P /etc/fail2ban/
 systemctl start fail2ban.service
@@ -112,7 +111,6 @@ systemctl enable fail2ban.service
 
 #загружаем конфиг с дополнениями к php.ini
 wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/customphp.ini -P /etc/php.d/
-
 
 #меняем настройки php-fpm
 old_run="listen = 127.0.0.1:9000"
@@ -125,7 +123,7 @@ old_run="group = apache"
 new_run="group = nginx"
 sed -i "s/$old_run/$new_run/" /etc/php-fpm.d/www.conf
 
-
+#стартуем php-fpm и добавляем в автозагрузку
 systemctl start php-fpm
 systemctl enable php-fpm
 
@@ -148,9 +146,7 @@ systemctl enable mariadb
 mkdir /var/www/$DDOMAIN
 bxsname=`tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c10`
 wget http://www.1c-bitrix.ru/download/scripts/bitrixsetup.php -O /var/www/$DDOMAIN/install-$bxsname.php
-
 sed -i "s/$bx_host = 'www.1c-bitrix.ru';/$bx_host = 'localhost';/" /var/www/$DDOMAIN/install-$bxsname.php
-
 wget http://www.1c-bitrix.ru/download/scripts/restore.php -O /var/www/$DDOMAIN/restore-$bxsname.php
 sed -i "s/restore.php/restore-$bxsname.php/" /var/www/$DDOMAIN/restore-$bxsname.php
 sed -i "s/$bx_host = 'www.1c-bitrix.ru';/$bx_host = 'localhost';/" /var/www/$DDOMAIN/restore-$bxsname.php
@@ -177,12 +173,12 @@ y
 y
 EOF
 
-#рубутаем службы
+#перезагружаем службы
 service nginx restart
 service mariadb restart
 service php-fpm restart
 
-
+#устанавливаем certbot и настраиваем https
 if [[ ! $DDHTTPS =~ ^[Nn]$ ]]; then
 yum -y install certbot python-certbot-nginx
 certbot --nginx
@@ -192,7 +188,6 @@ crontab mycron.tmp
 rm -f mycron.tmp
 fi
     
-
 
 print "====================================================================" 4
 print "\nInstallation Complete!!" 3
