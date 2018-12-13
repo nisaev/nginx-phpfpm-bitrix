@@ -184,17 +184,8 @@ service php-fpm restart
 if [[ ! $DDHTTPS =~ ^[Nn]$ ]]; then
 yum -y install certbot python-certbot-nginx
 clear
-
 print "Let's Encrypt HTTPS configurator:" 4
-
-certbot --nginx <<EOF
-$HTTPSEMAIL
-A
-N
-1
-EOF
-
-
+certbot -n -m $HTTPSEMAIL -d $DDOMAIN --nginx
 echo "15 3 * * 6 certbot renew && service nginx restart" >> mycron.tmp
 crontab mycron.tmp
 rm -f mycron.tmp
