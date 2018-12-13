@@ -187,7 +187,7 @@ linktype="https"
 yum -y install certbot python-certbot-nginx
 clear
 print "Let's Encrypt HTTPS configurator:" 4
-certbot -n -m $HTTPSEMAIL -d $DDOMAIN --nginx
+certbot -n -m $HTTPSEMAIL -d $DDOMAIN --nginx --agree-tos --redirect
 echo "15 3 * * 6 certbot renew && service nginx restart" >> mycron.tmp
 crontab mycron.tmp
 rm -f mycron.tmp
