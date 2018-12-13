@@ -80,7 +80,7 @@ EOF
 
 
 #Запрашиваем необходимость HTTPS
-read  -p "Would you like to install certbot and activate HTTPS with Let's Encrypt? (y/n):" DDHTTPS
+read  -p "Install and activate free HTTPS with Let's Encrypt? (y/n):" DDHTTPS
 
 
 #устанавливаем нужные пакеты
