@@ -99,10 +99,15 @@ systemctl enable fail2ban.service
 wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/customphp.ini -P /etc/php.d/
 
 
-rm -f /etc/php-fpm.d/www.conf
-wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/www.conf -P /etc/php-fpm.d/
-
-
+old_run="listen = 127.0.0.1:9000"
+new_run=';listen = 127.0.0.1:9000\nlisten = \/var\/run\/php-fpm\/php-fpm.sock\nlisten.owner = nginx\nlisten.group = nginx\nlisten.mode = 0660'
+sed -i "s/$old_run/$new_run/" /etc/php-fpm.d/www.conf
+old_run="user = apache"
+new_run="user = nginx"
+sed -i "s/$old_run/$new_run/" /etc/php-fpm.d/www.conf
+old_run="group = apache"
+new_run="group = nginx"
+sed -i "s/$old_run/$new_run/" /etc/php-fpm.d/www.conf
 
 
 systemctl start php-fpm
