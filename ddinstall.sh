@@ -77,12 +77,19 @@ cat > /root/mysql.pass << EOF
 $MYSQLROOTPASSWORD
 EOF
 
+
+#Запрашиваем необходимость HTTPS
+read  -p "Would you like to install certbot and activate HTTPS with Let's Encrypt? (y/n):" DDHTTPS
+
+
 #устанавливаем нужные пакеты
 yum -y install mc nano net-tools wget epel-release
 yum -y update
 yum -y install yum-utils
 rpm -Uhv http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 
+rm -f /etc/yum.repos.d/nginx.repo
+wget https://raw.githubusercontent.com/nisaev/nginx-phpfpm-bitrix/master/nginx.repo -P /etc/yum.repos.d/
 
 yum -y install nginx
 systemctl start nginx
@@ -92,8 +99,8 @@ firewall-cmd --permanent --zone=public --add-service=https
 firewall-cmd --reload
 
 
-yum-config-manager --enable remi-php71
-yum -y install php71
+yum-config-manager --enable remi-php72
+yum -y install php72
 yum -y install php-fpm php-cli php-mysql php-gd php-ldap php-odbc php-pdo php-pecl-memcache php-pear php-xml php-xmlrpc php-mbstring php-snmp php-soap php-zip php-opcache
 yum -y install msmtp
 
@@ -173,6 +180,13 @@ EOF
 service nginx restart
 service mariadb restart
 service php-fpm restart
+
+
+if [[ $DDHTPS == "y" ]]; then
+yum -y install certbot python-certbot-nginx
+certbot --nginx   
+fi
+    
 
 
 print "====================================================================" 4
